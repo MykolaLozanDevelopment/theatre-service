@@ -79,6 +79,16 @@ class Ticket(models.Model):
         related_name="tickets",
     )
 
+    @staticmethod
+    def validate_seat(row, seat, theatre_hall, error_to_raise):
+        if not (1 <= row <= theatre_hall.rows):
+            raise error_to_raise(
+                {"row": f"row must be in range [1, {theatre_hall.rows}]"}
+            )
+        if not (1 <= seat <= theatre_hall.seats_in_row):
+            raise error_to_raise(
+                {"seat": f"seat must be in range [1, {theatre_hall.seats_in_row}]"}
+            )
     class Meta:
         constraints = [
             models.UniqueConstraint(
