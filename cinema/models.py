@@ -89,6 +89,7 @@ class Ticket(models.Model):
             raise error_to_raise(
                 {"seat": f"seat must be in range [1, {theatre_hall.seats_in_row}]"}
             )
+        
     class Meta:
         constraints = [
             models.UniqueConstraint(
