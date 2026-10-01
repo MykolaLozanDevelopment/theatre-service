@@ -47,6 +47,26 @@ class PlayViewSet(viewsets.ModelViewSet):
     serializer_class = PlaySerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
+    def get_queryset(self):
+        queryset = self.queryset
+
+        title = self.request.query_params.get("title")
+        genres = self.request.query_params.get("genres")
+        actors = self.request.query_params.get("actors")
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+
+        if genres:
+            genre_ids = [int(str_id) for str_id in genres.split(",")]
+            queryset = queryset.filter(genres__id__in=genre_ids)
+
+        if actors:
+            actor_ids = [int(str_id) for str_id in actors.split(",")]
+            queryset = queryset.filter(actors__id__in=actor_ids)
+
+        return queryset.distinct()
+
     def get_serializer_class(self):
         if self.action == "list":
             return PlayListSerializer
@@ -59,6 +79,20 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        play = self.request.query_params.get("play")
+        date = self.request.query_params.get("date")
+
+        if play:
+            queryset = queryset.filter(play_id=int(play))
+
+        if date:
+            queryset = queryset.filter(show_time__date=date)
+
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "list":
