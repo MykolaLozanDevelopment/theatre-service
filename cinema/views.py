@@ -25,24 +25,31 @@ from cinema.serializers import (
 
 
 class ActorViewSet(viewsets.ModelViewSet):
+    """Manage actors: list, create, retrieve, update, delete."""
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
+    """Manage genres: list, create, retrieve, update, delete."""
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
+    """Manage theatre halls: list, create, retrieve, update, delete."""
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
 
 class PlayViewSet(viewsets.ModelViewSet):
+    """
+    Manage plays. Supports filtering by `title`, `genres` (comma-separated ids)
+    and `actors` (comma-separated ids).
+    """
     queryset = Play.objects.prefetch_related("actors", "genres")
     serializer_class = PlaySerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
@@ -76,6 +83,9 @@ class PlayViewSet(viewsets.ModelViewSet):
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
+    """
+    Manage performances. Supports filtering by `play` (id) and `date` (YYYY-MM-DD).
+    """
     queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
@@ -110,6 +120,7 @@ class ReservationViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
+    """List and create reservations for the currently authenticated user."""
     queryset = Reservation.objects.prefetch_related(
         "tickets__performance__play", "tickets__performance__theatre_hall"
     )
