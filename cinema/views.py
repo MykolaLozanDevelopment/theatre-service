@@ -84,7 +84,8 @@ class PlayViewSet(viewsets.ModelViewSet):
 
 class PerformanceViewSet(viewsets.ModelViewSet):
     """
-    Manage performances. Supports filtering by `play` (id) and `date` (YYYY-MM-DD).
+    Manage performances.
+    Supports filtering by `play` (id) and `date` (YYYY-MM-DD).
     """
     queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer

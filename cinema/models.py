@@ -60,6 +60,7 @@ class Reservation(models.Model):
         on_delete=models.CASCADE,
         related_name="reservations",
     )
+
     class Meta:
         ordering = ["-created_at"]
 
@@ -89,9 +90,12 @@ class Ticket(models.Model):
             )
         if not (1 <= seat <= theatre_hall.seats_in_row):
             raise error_to_raise(
-                {"seat": f"seat must be in range [1, {theatre_hall.seats_in_row}]"}
+                {
+                    "seat": f"seat must be in range "
+                    f"[1, {theatre_hall.seats_in_row}]"
+                }
             )
-        
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
