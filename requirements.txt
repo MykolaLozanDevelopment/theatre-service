@@ -5,6 +5,7 @@ django-filter==26.1
 djangorestframework==3.18.1
 djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.30.0
+flake8==7.4.1
 inflection==0.5.1
 jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
