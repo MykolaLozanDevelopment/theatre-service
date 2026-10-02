@@ -60,6 +60,8 @@ class Reservation(models.Model):
         on_delete=models.CASCADE,
         related_name="reservations",
     )
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"Reservation #{self.id}"
